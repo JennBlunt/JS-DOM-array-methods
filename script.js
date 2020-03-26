@@ -30,15 +30,44 @@ async function getRandomUser() {
         name: `${user.name.first} ${user.name.last}`,
         money: Math.floor(Math.random() * 1000000)
     }
-
     addData(newUser);
 }
+
+// Double money
+function doubleMoney() {
+    data = data.map((user) => {
+        return { ...user, money: user.money * 2 };
+    });
+    updateDOM();
+}
+
+// Sort useres by richest (decending)
+function sortByRichest() {
+    data.sort((a, b) => b.money - a.money);
+    updateDOM();
+}
+
+// Filter only millionaires
+function showMillionaires() {
+    data = data.filter(user => user.money > 1000000);
+    updateDOM();
+}
+
+
+// calulate total wealth of all users
+function calculateWealth() {
+    const wealth = data.reduce((acc, user) => (acc += user.money), 0);
+
+    const wealthEl = document.createElement('div');
+    wealthEl.innerHTML = `<h3>Total Wealth: <strong>${formatMoney(wealth)}</strong></h3>`;
+    main.appendChild(wealthEl);
+}
+
 
 // Add new obj to data array
 
 function addData(object) {
     data.push(object);
-
     updateDOM();
 }
 
@@ -63,3 +92,7 @@ function formatMoney(number) {
 
 //Event listners
 addUseBtnr.addEventListener('click', getRandomUser);
+doubleBtn.addEventListener('click', doubleMoney);
+sortBtn.addEventListener('click', sortByRichest);
+showMilBtn.addEventListener('click', showMillionaires);
+calcWealthBtn.addEventListener('click', calculateWealth);
